@@ -3167,7 +3167,7 @@
         updateFilter();
 
         const allFilters = [
-          "tag-minato", "tag-shibuya", "tag-shinjuku",
+          "tag-minato", "tag-shibuya", "tag-shinjuku","tag-toshima", "tag-kita", "tag-arakawa","tag-taitou", "tag-sumida", "tag-koutou",
           "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station"
         ];
         allFilters.forEach(id => {
@@ -3188,6 +3188,12 @@
         if (document.getElementById("tag-minato").checked) activeAreas.push("minato");
         if (document.getElementById("tag-shibuya").checked) activeAreas.push("shibuya");
         if (document.getElementById("tag-shinjuku").checked) activeAreas.push("shinjuku");
+        if (document.getElementById("tag-toshima").checked) activeAreas.push("toshima");
+        if (document.getElementById("tag-kita").checked) activeAreas.push("kita");
+        if (document.getElementById("tag-arakawa").checked) activeAreas.push("arakawa");
+        if (document.getElementById("tag-taitou").checked) activeAreas.push("taitou");
+        if (document.getElementById("tag-sumida").checked) activeAreas.push("sumida");
+        if (document.getElementById("tag-koutou").checked) activeAreas.push("koutou");
 
         // 現在チェックが入っている「スポット（グループ1）」を取得
         const activeCategories = [];
