@@ -8668,10 +8668,10 @@
           return img;
         };
 
-        // (1) 【交差点】新宿三丁目交差点（新宿区・交差点）
-        const m1 = new AdvancedMarkerElement({ position: { lat: 35.6896, lng: 139.7006 }, title: "新宿三丁目交差点", content: pinBlue.element });
-        m1.addListener("click", () => { infoWindow.setContent("<h3>新宿三丁目交差点</h3><p>明治通りの要所です。</p>"); infoWindow.open(map, m1); });
-        mapItems.push({ element: m1, areaTag: "shinjuku", categoryTag: "intersection", isMarker: true });
+        // (1) 【交差点】
+        const m1 = new AdvancedMarkerElement({ position: { lat: 35.6429527, lng: 139.7340999 }, title: "白金一丁目交差点", content: pinBlue.element });
+        m1.addListener("click", () => { infoWindow.setContent("<h3>白金一丁目交差点</h3><p>明治通り本第２版１０ページ</p>"); infoWindow.open(map, m1); });
+        mapItems.push({ element: m1, areaTag: "minato", categoryTag: "intersection", isMarker: true });
 
         // (2) 【フォト】渋谷・宮下公園（渋谷区・フォトスポット）
         const m2 = new AdvancedMarkerElement({ position: { lat: 35.6698, lng: 139.7049 }, title: "渋谷・宮下公園", content: createIcon("https://maps.google.com/mapfiles/kml/shapes/camera.png") });
