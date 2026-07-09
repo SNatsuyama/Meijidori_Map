@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>明治通り沿線情報マップ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+      }
+      #container {
+        display: flex;
+        height: 100vh;
+        flex-direction: row;
+      }
+      #map {
+        flex: 1;
+        height: 100%;
+      }
+      /* 左側のコントロールパネル（表示・非表示切り替え用） */
+      #panel {
+        width: 280px;
+        background-color: #ffffff;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        z-index: 10;
+      }
+      h3 {
+        margin-top: 0;
+        border-bottom: 2px solid #33c;
+        padding-bottom: 8px;
+        font-size: 16px;
+      }
+      .control-group {
+        margin-bottom: 20px;
+      }
+      .control-item {
+        margin: 8px 0;
+        display: flex;
+        align-items: center;
+      }
+      .control-item input {
+        margin-right: 10px;
+        width: 16px;
+        height: 16px;
+      }
+      label {
+        font-size: 14px;
+        cursor: pointer;
+      }
+      /* モバイル対応：画面が狭いときはパネルを下に配置 */
+      @media (max-width: 768px) {
+        #container {
+          flex-direction: column-reverse;
+        }
+        #panel {
+          width: 100%;
+          height: 35vh;
+        }
+        #map {
+          height: 65vh;
+        }
+      }
+    </style>
+    <!-- Google Maps JavaScript API の読み込み -->
+    <script>
+      (g=>{var h="",navigator,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await import(navigator="");for(var a in f)d[a]=f[a];d.tag=1;c();r.forEach(v=>v())}));d[l]?console.warn(p+" only loads once. Re-loading library"):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+        key:AIzaSyAtS9PympKieGJ8LvpIbqFn0A8l0AkJ7Qc,
+        v: "weekly"
+      });
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <!-- 表示・非表示切り替えコントロールパネル -->
+      <div id="panel">
+        <h3>レイヤー表示切替</h3>
+        
+        <div class="control-group">
+          <strong>自治体（エリア）</strong>
+          <div class="control-item">
+            <input type="checkbox" id="toggle-shibuya-poly" checked />
+            <label for="toggle-shibuya-poly">渋谷区（ポリゴン）</label>
+          </div>
+          <div class="control-item">
+            <input type="checkbox" id="toggle-shinjuku-poly" checked />
+            <label for="toggle-shinjuku-poly">新宿区（ポリゴン）</label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <strong>道路（ライン）</strong>
+          <div class="control-item">
+            <input type="checkbox" id="toggle-meiji-line" checked />
+            <label for="toggle-meiji-line">明治通り</label>
+          </div>
+          <div class="control-item">
+            <input type="checkbox" id="toggle-crossing-lines" checked />
+            <label for="toggle-crossing-lines">交差する道路</label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <strong>ピン（アイコン種別）</strong>
+          <div class="control-item">
+            <input type="checkbox" id="toggle-intersections" checked />
+            <label for="toggle-intersections">交差点</label>
+          </div>
+          <div class="control-item">
+            <input type="checkbox" id="toggle-photos" checked />
+            <label for="toggle-photos">写真撮影スポット</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 地図表示エリア -->
+      <div id="map"></div>
+    </div>
+
+    <script>
+      let map;
+      let infoWindow;
+
+      // 各オブジェクトを管理するオブジェクト
+      const layers = {
+        polygons: {},      // 自治体ポリゴン
+        polylines: {},     // 道路ライン
+        crossingLines: [], // 交差する道路（複数まとめて管理）
+        markers: {
+          intersections: [], // 交差点マーカー
+          photos: []         // 写真マーカー
+        }
+      };
+
+      async function initMap() {
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+        const { InfoWindow } = await google.maps.importLibrary("maps");
+
+        // 情報ウィンドウ（ポップアップ）の初期化
+        infoWindow = new InfoWindow();
+
+        // 地図の初期化
+        map = new Map(document.getElementById("map"), {
+          center: { lat: 35.684, lng: 139.710 },
+          zoom: 13,
+          mapId:fb56929676bfd00eebae2174,
+          mapTypeControl: false,
+        });
+
+        // ==========================================
+        // 1. 自治体（ポリゴン表示・非表示対応）
+        // ==========================================
+        // 渋谷区ポリゴン
+        layers.polygons['shibuya'] = new google.maps.Polygon({
+          paths: [
+            { lat: 35.680, lng: 139.690 }, { lat: 35.680, lng: 139.715 },
+            { lat: 35.650, lng: 139.715 }, { lat: 35.650, lng: 139.690 }
+          ],
+          strokeColor: "#00FF00", strokeOpacity: 0.8, strokeWeight: 2,
+          fillColor: "#00FF00", fillOpacity: 0.15,
+          map: map
+        });
+        addClickEvent(layers.polygons['shibuya'], "<h3>渋谷区エリア</h3><p>明治通りが通過する自治体です（半透明表示）。</p>");
+
+        // 新宿区ポリゴン
+        layers.polygons['shinjuku'] = new google.maps.Polygon({
+          paths: [
+            { lat: 35.710, lng: 139.690 }, { lat: 35.710, lng: 139.720 },
+            { lat: 35.680, lng: 139.720 }, { lat: 35.680, lng: 139.690 }
+          ],
+          strokeColor: "#FF9900", strokeOpacity: 0.8, strokeWeight: 2,
+          fillColor: "#FF9900", fillOpacity: 0.15,
+          map: map
+        });
+        addClickEvent(layers.polygons['shinjuku'], "<h3>新宿区エリア</h3><p>新宿駅東側を明治通りが縦断しています。</p>");
+
+
+        // ==========================================
+        // 2. 道路（ポリライン表示・非表示対応）
+        // ==========================================
+        // 明治通り本体
+        layers.polylines['meiji'] = new google.maps.Polyline({
+          path: [
+            { lat: 35.6482, lng: 139.7111 }, { lat: 35.6698, lng: 139.7049 },
+            { lat: 35.6896, lng: 139.7006 }, { lat: 35.7295, lng: 139.7109 }
+          ],
+          strokeColor: "#FF0000", strokeOpacity: 1.0, strokeWeight: 6,
+          map: map
+        });
+        addClickEvent(layers.polylines['meiji'], "<h3>明治通り（環状第5号線）</h3><p>港区南麻布から江東区夢の島に至る東京都の主要道路です。</p>");
+
+        // 交差する道路（複数）
+        const crossing1 = new google.maps.Polyline({
+          path: [{ lat: 35.6896, lng: 139.6800 }, { lat: 35.6896, lng: 139.7200 }], // 甲州街道
+          strokeColor: "#0055FF", strokeOpacity: 0.8, strokeWeight: 4,
+          map: map
+        });
+        addClickEvent(crossing1, "<h3>甲州街道（国道20号）</h3><p>明治通りと「新宿三丁目交差点」で立体交差・接続しています。</p>");
+        layers.crossingLines.push(crossing1);
+
+
+        // ==========================================
+        // 3. アイコン（交差点・写真撮影スポット）
+        // ==========================================
+        // 交差点アイコンのピン（青色）
+        const intersectionPin = new PinElement({ background: "#0055FF", borderColor: "#002288", glyphColor: "#FFFFFF" });
+        
+        const m1 = new AdvancedMarkerElement({
+          map,
+          position: { lat: 35.6896, lng: 139.7006 },
+          title: "新宿三丁目交差点",
+          content: intersectionPin.element
+        });
+        // マーカーへのクリックイベント登録
+        m1.addListener("click", () => {
+          infoWindow.setContent("<h3>新宿三丁目交差点</h3><p>明治通りと新宿通り・甲州街道が交わる主要な交差点です。</p>");
+          infoWindow.open(map, m1);
+        });
+        layers.markers.intersections.push(m1);
+
+        // 写真スポット（カスタムカメラアイコン）
+        const createCameraIcon = () => {
+          const img = document.createElement("img");
+          img.src = "https://maps.google.com/mapfiles/kml/shapes/camera.png";
+          img.style.width = "32px"; img.style.height = "32px";
+          return img;
+        };
+
+        const m2 = new AdvancedMarkerElement({
+          map,
+          position: { lat: 35.6698, lng: 139.7049 },
+          title: "渋谷駅付近の撮影地",
+          content: createCameraIcon()
+        });
+        m2.addListener("click", () => {
+          infoWindow.setContent("<h3>宮下公園付近での写真</h3><p>【撮影日時】2026年7月<br>明治通り沿いの宮下公園（MIYASHITA PARK）をバックに撮影。</p>");
+          infoWindow.open(map, m2);
+        });
+        layers.markers.photos.push(m2);
+
+
+        // ==========================================
+        // 4. コントロール（表示切り替えスイッチ）のイベント設定
+        // ==========================================
+        // 渋谷区ポリゴン
+        document.getElementById("toggle-shibuya-poly").addEventListener("change", (e) => {
+          layers.polygons['shibuya'].setMap(e.target.checked ? map : null);
+        });
+        // 新宿区ポリゴン
+        document.getElementById("toggle-shinjuku-poly").addEventListener("change", (e) => {
+          layers.polygons['shinjuku'].setMap(e.target.checked ? map : null);
+        });
+        // 明治通り
+        document.getElementById("toggle-meiji-line").addEventListener("change", (e) => {
+          layers.polylines['meiji'].setMap(e.target.checked ? map : null);
+        });
+        // 交差する道路（配列内のすべてを一括処理）
+        document.getElementById("toggle-crossing-lines").addEventListener("change", (e) => {
+          const isChecked = e.target.checked;
+          layers.crossingLines.forEach(line => line.setMap(isChecked ? map : null));
+        });
+        // 交差点ピン
+        document.getElementById("toggle-intersections").addEventListener("change", (e) => {
+          const isChecked = e.target.checked;
+          layers.markers.intersections.forEach(marker => marker.map = isChecked ? map : null);
+        });
+        // 写真スポットピン
+        document.getElementById("toggle-photos").addEventListener("change", (e) => {
+          const isChecked = e.target.checked;
+          layers.markers.photos.forEach(marker => marker.map = isChecked ? map : null);
+        });
+      }
+
+      // ポリゴン・ライン共用のクリックポップアップ登録関数
+      function addClickEvent(overlay, contentString) {
+        overlay.addListener("click", (event) => {
+          infoWindow.setContent(contentString);
+          // クリックされた位置（緯度経度）にポップアップを表示
+          infoWindow.setPosition(event.latLng);
+          infoWindow.open(map);
+        });
+      }
+
+      window.onload = initMap;
+    </script>
+  </body>
+</html>
