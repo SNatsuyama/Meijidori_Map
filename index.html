@@ -8669,9 +8669,27 @@
         };
 
         // (1) 【交差点】
-        const m1 = new AdvancedMarkerElement({ position: { lat: 35.6429527, lng: 139.7340999 }, title: "白金一丁目交差点", content: pinBlue.element });
-        m1.addListener("click", () => { infoWindow.setContent("<h3>白金一丁目交差点</h3><p>明治通り本第２版１０ページ</p>"); infoWindow.open(map, m1); });
-        mapItems.push({ element: m1, areaTag: "minato", categoryTag: "intersection", isMarker: true });
+        const m01 = new AdvancedMarkerElement({ position: { lat: 35.6429527, lng: 139.7340999 }, title: "白金一丁目交差点", content: pinBlue.element });
+        m01.addListener("click", () => { infoWindow.setContent("<h3>白金一丁目交差点</h3><p>明治通り本第２版１０ページ</p>"); infoWindow.open(map, m01); });
+        mapItems.push({ element: m01, areaTag: "minato", categoryTag: "intersection", isMarker: true });
+
+        const m02 = new AdvancedMarkerElement({ position: { lat: 35.6465787, lng: 139.7359858 }, title: "古川橋交差点", content: pinBlue.element });
+        m02.addListener("click", () => { infoWindow.setContent("<h3>古川橋交差点</h3><p>明治通り本第２版１０ページ</p>"); infoWindow.open(map, m02); });
+        mapItems.push({ element: m02, areaTag: "minato", categoryTag: "intersection", isMarker: true });
+
+        const m03 = new AdvancedMarkerElement({ position: { lat: 35.6476201, lng: 139.7228232 }, title: "天現寺橋交差点", content: pinBlue.element });
+        m03.addListener("click", () => { infoWindow.setContent("<h3>天現寺橋交差点</h3><p>明治通り本第２版１２ページ</p>"); infoWindow.open(map, m03); });
+        mapItems.push({ element: m03, areaTag: "minato", areaTag: "shibuya", categoryTag: "intersection", isMarker: true });
+
+
+
+
+
+
+
+
+
+
 
         // (2) 【フォト】渋谷・宮下公園（渋谷区・フォトスポット）
         const m2 = new AdvancedMarkerElement({ position: { lat: 35.6698, lng: 139.7049 }, title: "渋谷・宮下公園", content: createIcon("https://maps.google.com/mapfiles/kml/shapes/camera.png") });
