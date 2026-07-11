@@ -134,28 +134,30 @@
         // ==========================================
         // ★複数GeoJSONファイルの読み込みと連動設定
         // ==========================================
+                // ==========================================
+        // ★複数GeoJSONファイルの読み込みと連動設定（CORS対策済URL）
+        // ==========================================
         const geoJsonConfigs = [
           {
-            // 1. 交差道路のGeoJSON
-            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/%E4%BA%A4%E5%B7%AE%E9%81%93%E8%B7%AF%E3%83%BB%E9%96%A2%E9%80%A3%E9%81%93%E8%B7%AF%E3%80%90%E8%A5%BF%E5%81%B4%E5%8C%BA%E9%96%93%E3%80%91.geojson",
+            // 1. 交差道路
+            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/%E4%BA%A4%E5%B7%AE%E9%81%93%E8%B7%AF%E3%83%BB%E9%96%A2%E9%80%A3%E9%81%93%E8%B7%AF%E3%80%90%E8%A5%BF%E5%81%B4%E5%8C%BA%E9%96%93%E3%80%91.geojson",
             areaTag: null,
             categoryTag: "crossing"
           },
           {
-            // 2. 明治通り本体のGeoJSON
-            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/%E6%98%8E%E6%B2%BB%E9%80%9A%E3%82%8A.geojson",
+            // 2. 明治通り本体
+            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/%E6%98%8E%E6%B2%BB%E9%80%9A%E3%82%8A.geojson",
             isMeijiLine: true
-          }
-          // ※今後、区ポリゴンのGeoJSONを追加する際は以下のように記載してアップロードしてください
-          
-          ,
+          },
           {
-            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/%E6%B8%AF%E5%8C%BA.geojson",
-            categoryTag: "region", // ★区ポリゴンのカテゴリタグに "region" を指定して一括で制御
-            areaTag: "minato"
+            // 3. 【新規】港区ポリゴン
+            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/%E6%B8%AF%E5%8C%BA.geojson",
+            areaTag: "minato",
+            categoryTag: "region" // 区の塗り分けカテゴリ
           }
-          
+          // ★今後、渋谷区や新宿区のポリゴンも同様にここに追加できます！
         ];
+
 
         geoJsonConfigs.forEach(config => {
           const tempLayer = new google.maps.Data();
