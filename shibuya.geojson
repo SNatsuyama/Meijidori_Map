@@ -32,7 +32,9 @@
         "type": "boundary",
         "wikidata": "Q193638",
         "wikimedia_commons": "Category:Shibuya",
-        "wikipedia": "ja:渋谷区"
+        "wikipedia": "ja:渋谷区",
+        "areaTag": "shibuya",
+        "categoryTag": "region"
       },
       "geometry": {
         "type": "Polygon",

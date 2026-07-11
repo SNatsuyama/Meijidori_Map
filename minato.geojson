@@ -32,7 +32,9 @@
         "type": "boundary",
         "wikidata": "Q190088",
         "wikimedia_commons": "Category:Minato, Tokyo",
-        "wikipedia": "ja:港区 (東京都)"
+        "wikipedia": "ja:港区 (東京都)",
+        "areaTag": "minato",
+        "categoryTag": "region"
       },
       "geometry": {
         "type": "Polygon",
