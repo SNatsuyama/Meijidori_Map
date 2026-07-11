@@ -155,10 +155,10 @@
           },
 
           {
-            // 3. 区境
-            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/%E6%98%8E%E6%B2%BB%E9%80%9A%E3%82%8A%E5%8C%BA%E5%A2%83.kml",
-            areaTag: null,            // 特定の区に属さない（全体）
-            categoryTag: "null"
+            // 3. 港区
+            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/%E6%B8%AF%E5%8C%BA.kml",
+            areaTag: "minato",            // 特定の区に属さない（全体）
+            categoryTag: "region"
           },
         ];
 
@@ -191,7 +191,7 @@
         // フィルターイベントの監視設定
         const allFilters = [
           "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taito", "tag-sumida", "tag-koto",
-          "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station"
+          "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station" , "tag-region"
         ];
         allFilters.forEach(id => {
           document.getElementById(id).addEventListener("change", updateFilter);
@@ -228,6 +228,7 @@
         if (document.getElementById("tag-crossing").checked) activeCategories.push("crossing");
         if (document.getElementById("tag-restaurant").checked) activeCategories.push("restaurant");
         if (document.getElementById("tag-station").checked) activeCategories.push("station");
+        if (document.getElementById("tag-region").checked) activeCategories.push("region");
 
         kmlLayersList.forEach(item => {
           const areaMatch = !item.areaTag || activeAreas.includes(item.areaTag);
