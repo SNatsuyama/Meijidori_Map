@@ -24,13 +24,25 @@
         width: 290px;
         background-color: #ffffff;
         box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-        padding: 20px;
         box-sizing: border-box;
-        overflow-y: auto;
         z-index: 10;
         display: flex;
         flex-direction: column;
       }
+      
+      /* ★追加：上部の固定エリア（タイトルと詳細情報） */
+      #panel-header {
+        padding: 20px 20px 0 20px;
+        flex-shrink: 0; /* ここは縮ませない！ */
+      }
+      
+      /* ★追加：下のスクロールするエリア（フィルター類） */
+      #panel-scroll {
+        padding: 0 20px 20px 20px;
+        overflow-y: auto; /* ここだけスクロールさせるの！ */
+        flex: 1;
+      }
+
       h3 {
         margin-top: 0;
         border-bottom: 2px solid #33c;
@@ -55,11 +67,11 @@
         cursor: pointer;
       }
       
-      /* ★追加：詳細情報エリアのスタイル */
+      /* 詳細情報エリアのスタイル */
       #info-box {
-        margin-top: auto; /* パネルの下の方に押しやる */
-        padding-top: 15px;
-        border-top: 2px dashed #ccc;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 2px dashed #ccc;
       }
       #info-box h4 {
         margin: 0 0 10px 0;
@@ -83,9 +95,6 @@
         #map {
           height: 55vh;
         }
-        #info-box {
-          margin-top: 20px; /* スマホのときは少し余白をあけるだけ */
-        }
       }
     </style>
     <!-- Google Maps JavaScript API の読み込み（高速非同期ロード版） -->
@@ -94,30 +103,42 @@
   <body>
     <div id="container">
       <div id="panel">
-        <h3>沿線フィルターマップ</h3>
-        
-        <!-- ★修正：詳細情報エリアを上に移動！ -->
-        <div id="info-box">
-          <h4>詳細情報</h4>
-          <div id="info-content">
-            <p>地図上のアイコンや道路をクリックすると、ここに詳細が表示されるわよ！</p>
+        <!-- 上部の固定エリア -->
+        <div id="panel-header">
+          <h3>沿線フィルターマップ</h3>
+          <div id="info-box">
+            <h4>詳細情報</h4>
+            <div id="info-content">
+              <p>地図上のアイコンや道路をクリックすると、ここに詳細が表示されるわよ！</p>
+            </div>
           </div>
         </div>
 
-        <!-- フィルター類をこの下にまとめる -->
-        <div>
+        <!-- スクロールするフィルターエリア -->
+        <div id="panel-scroll">
           <!-- 【グループ2：エリア】（OR条件） -->
           <div class="control-group">
             <strong>2. 所在区（エリア）</strong>
             <div class="control-item"><input type="checkbox" id="tag-minato" checked /><label for="tag-minato">港区</label></div>
-            <!-- ...残りのチェックボックス... -->
+            <div class="control-item"><input type="checkbox" id="tag-shibuya" checked /><label for="tag-shibuya">渋谷区</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-shinjuku" checked /><label for="tag-shinjuku">新宿区</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-toshima" checked /><label for="tag-toshima">豊島区</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-kita" checked /><label for="tag-kita">北区</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-arakawa" checked /><label for="tag-arakawa">荒川区</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-taitou" checked /><label for="tag-taitou">台東区</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-sumida" checked /><label for="tag-sumida">墨田区</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-koutou" checked /><label for="tag-koutou">江東区</label></div>
           </div>
 
           <!-- 【グループ1：スポット種別】（OR条件） -->
           <div class="control-group">
             <strong>1. スポット種別</strong>
             <div class="control-item"><input type="checkbox" id="tag-region" checked /><label for="tag-region">区の塗り分け</label></div>
-            <!-- ...残りのチェックボックス... -->
+            <div class="control-item"><input type="checkbox" id="tag-photo" checked /><label for="tag-photo">フォトスポット</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-intersection" checked /><label for="tag-intersection">交差点</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-crossing" checked /><label for="tag-crossing">交差道路</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-restaurant" checked /><label for="tag-restaurant">おすすめ飲食店</label></div>
+            <div class="control-item"><input type="checkbox" id="tag-station" checked /><label for="tag-station">周辺駅</label></div>
           </div>
 
           <!-- 明治通り本体の表示切替 -->
@@ -130,6 +151,7 @@
           </div>
         </div>
       </div>
+
       <div id="map"></div>
     </div>
 
@@ -139,12 +161,10 @@
       let mapDataLayer;
       let meijiLayer;
       
-      // フィルターと選択状態の変数
       let activeAreas = [];
       let activeCategories = [];
       let selectedFeatureName = null;
 
-      // 区ごとのカラー指定
       const regionColors = {
         "minato": "#efbb57",
         "shibuya": "#b0cc44",
@@ -157,7 +177,6 @@
         "koutou": "#d55258"
       };
 
-      // 道路の名前から自動で色を作る関数
       function getColorByName(str) {
         if (!str) return "#0055FF";
         let hash = 0;
@@ -168,19 +187,16 @@
         return `hsl(${hue}, 80%, 45%)`;
       }
 
-      // ★追加：情報を表示する関数
       function showInfo(name, desc) {
         let contentHtml = `<strong>${name}</strong>`;
         if (desc) {
-          // descriptionがある場合は改行（\n）を<br>に変換して表示するわ
-          contentHtml += `<p>${desc.replace(/\\n/g, '<br>')}</p>`;
+          contentHtml += `<p style="margin-top: 5px;">${desc.replace(/\\n/g, '<br>')}</p>`;
         } else {
-          contentHtml += `<p>特に説明はないみたいね。</p>`;
+          contentHtml += `<p style="margin-top: 5px;">特に説明はないみたいね。</p>`;
         }
         document.getElementById('info-content').innerHTML = contentHtml;
       }
 
-      // ★追加：選択を解除して情報をリセットする関数
       function clearInfo() {
         selectedFeatureName = null;
         mapDataLayer.setStyle(getFeatureStyle);
@@ -197,13 +213,12 @@
           mapTypeControl: false,
         });
 
-        // ★追加：地図の何もないところをクリックしたら選択解除
+        // 何もないところをクリックした時は情報をリセット
         map.addListener('click', clearInfo);
 
         mapDataLayer = new google.maps.Data({ map: map });
         meijiLayer = new google.maps.Data({ map: map });
 
-        // 明治通り本体のスタイル
         meijiLayer.setStyle({ 
           strokeColor: "#FF0000", 
           strokeWeight: 6, 
@@ -211,7 +226,6 @@
           zIndex: 15
         });
 
-        // 複数GeoJSONの読み込み
         const geoJsonConfigs = [
           { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/crossing_w.geojson", categoryTag: "crossing" },
           { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/meijidori.geojson", isMeijiLine: true },
@@ -256,7 +270,7 @@
 
         mapDataLayer.setStyle(getFeatureStyle);
 
-        // ★修正：吹き出しを出さずに、パネルの情報を更新する
+        // 要素クリック時のイベント
         mapDataLayer.addListener('click', function(event) {
           const name = event.feature.getProperty("Name") || event.feature.getProperty("name") || "名称未設定";
           const desc = event.feature.getProperty("description");
@@ -267,7 +281,6 @@
           showInfo(name, desc);
         });
 
-        // フィルターイベント監視
         const allFilters = [
           "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taitou", "tag-sumida", "tag-koutou",
           "tag-region", "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station"
@@ -334,7 +347,7 @@
           style.fillColor = regionColor;
           style.fillOpacity = 0.4;
           style.zIndex = 1;
-          style.clickable = false;
+          style.clickable = false; // ★クリック判定を無効にする！
         }
 
         return style;
