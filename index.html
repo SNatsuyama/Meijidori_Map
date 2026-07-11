@@ -66,7 +66,8 @@
       }
     </style>
     <!-- Google Maps JavaScript API の読み込み -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtS9PympKieGJ8LvpIbqFn0A8l0AkJ7Qc&callback=initMap&v=weekly&libraries=marker" defer></script>
+        <!-- Google Maps JavaScript API の読み込み（高速非同期ロード版） -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtS9PympKieGJ8LvpIbqFn0A8l0AkJ7Qc&callback=initMap&v=weekly&libraries=marker" async defer></script>
   </head>
   <body>
     <div id="container">
@@ -140,22 +141,27 @@
         const geoJsonConfigs = [
           {
             // 1. 交差道路
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/%E4%BA%A4%E5%B7%AE%E9%81%93%E8%B7%AF%E3%83%BB%E9%96%A2%E9%80%A3%E9%81%93%E8%B7%AF%E3%80%90%E8%A5%BF%E5%81%B4%E5%8C%BA%E9%96%93%E3%80%91.geojson",
+            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/crossing_w.geojson",
             areaTag: null,
             categoryTag: "crossing"
           },
           {
             // 2. 明治通り本体
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/%E6%98%8E%E6%B2%BB%E9%80%9A%E3%82%8A.geojson",
+            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/meijidori.geojson",
             isMeijiLine: true
           },
           {
-            // 3. 【新規】港区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/%E6%B8%AF%E5%8C%BA.geojson",
+            // 3. 港区ポリゴン
+            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/minato.geojson",
             areaTag: "minato",
             categoryTag: "region" // 区の塗り分けカテゴリ
+          },
+          {
+            // 3. 渋谷区ポリゴン
+            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/shibuya.geojson",
+            areaTag: "shibuya",
+            categoryTag: "region" // 区の塗り分けカテゴリ
           }
-          // ★今後、渋谷区や新宿区のポリゴンも同様にここに追加できます！
         ];
 
 
