@@ -4044,53 +4044,6 @@
         ]
       },
       "id": "relation/1759477"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "node/1438867377",
-        "@relations": [
-          {
-            "role": "admin_centre",
-            "rel": "1759477",
-            "reltags": {
-              "admin_level": "7",
-              "boundary": "administrative",
-              "name": "渋谷区",
-              "name:cs": "Šibuja",
-              "name:en": "Shibuya",
-              "name:es": "Shibuya",
-              "name:fr": "Arrondissement de Shibuya",
-              "name:it": "Shibuya",
-              "name:ja": "渋谷区",
-              "name:ja-Hira": "しぶやく",
-              "name:ja-Latn": "Shibuya-ku",
-              "name:ko": "시부야구",
-              "name:ru": "Сибуя",
-              "name:zh": "澀谷區",
-              "name:zh-Hans": "涩谷区",
-              "name:zh-Hant": "澀谷區",
-              "place": "city",
-              "population": "227850",
-              "ref": "131130",
-              "source:population": "http://www.toukei.metro.tokyo.jp/jsuikei/js-index.htm",
-              "start_date": "1947-05-03",
-              "type": "boundary",
-              "wikidata": "Q193638",
-              "wikimedia_commons": "Category:Shibuya",
-              "wikipedia": "ja:渋谷区"
-            }
-          }
-        ]
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          139.6976941,
-          35.6637109
-        ]
-      },
-      "id": "node/1438867377"
     }
   ]
 }
