@@ -1,0 +1,1069 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>交差点</name>
+    <Style id="icon-1769-FF5252-normal">
+      <IconStyle>
+        <color>ff5252ff</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-1769-FF5252-highlight">
+      <IconStyle>
+        <color>ff5252ff</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-1769-FF5252">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1769-FF5252-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1769-FF5252-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>白金一丁目交差点</name>
+      <description><![CDATA[明治通り本前編第２版１０ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7340999,35.6429527,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>古川橋交差点</name>
+      <description><![CDATA[明治通り本前編第２版１０ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7359858,35.6465787,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>天現寺橋交差点</name>
+      <description><![CDATA[明治通り本前編第２版１２ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7228232,35.6476201,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>恵比寿三丁目交差点</name>
+      <description><![CDATA[明治通り本前編第２版１２ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7218325,35.6447952,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>恵比寿一丁目交差点</name>
+      <description><![CDATA[明治通り本前編第２版１４ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7101014,35.6482778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>渋谷橋交差点</name>
+      <description><![CDATA[明治通り本前編第２版１４ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7113325,35.6489404,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>（渋谷駅東口交差点）</name>
+      <description><![CDATA[明治通り本前編第２版１６ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.703149,35.658057,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>神宮前交差点</name>
+      <description><![CDATA[明治通り本前編第２版２２ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7053778,35.6685081,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>北参道交差点</name>
+      <description><![CDATA[明治通り本前編第２版２４ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7045386,35.6803658,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>（千駄ヶ谷五丁目北交差点）</name>
+      <description><![CDATA[明治通り本前編第２版２６ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7036049,35.6855162,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>新宿四丁目交差点</name>
+      <description><![CDATA[明治通り本前編第２版２８ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7041389,35.6897832,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>（新宿二丁目南交差点）</name>
+      <description><![CDATA[明治通り本前編第２版２８ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7063631,35.6893644,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>新宿三丁目交差点</name>
+      <description><![CDATA[明治通り本前編第２版３０ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7048704,35.6908653,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>新宿二丁目交差点</name>
+      <description><![CDATA[明治通り本前編第２版３０ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7067718,35.6899792,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>新宿五丁目交差点</name>
+      <description><![CDATA[明治通り本前編第２版３４ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7058023,35.6924308,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>新宿五丁目東交差点</name>
+      <description><![CDATA[明治通り本前編第２版３４ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.707018,35.692115,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>（新宿五丁目北交差点）</name>
+      <description><![CDATA[明治通り本前編第２版３８ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7068024,35.6936187,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>新宿七丁目交差点</name>
+      <description><![CDATA[明治通り本前編第２版４０ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7075011,35.6979416,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>大久保二丁目交差点</name>
+      <description><![CDATA[明治通り本前編第２版４２ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7080539,35.7009031,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>諏訪町交差点</name>
+      <description><![CDATA[明治通り本前編第２版４６ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7091139,35.708425,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>馬場口交差点</name>
+      <description><![CDATA[明治通り本前編第２版４８ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7100189,35.7114907,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>高戸橋交差点</name>
+      <description><![CDATA[明治通り本前編第２版５２ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7113451,35.7143594,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>千登世橋上交差点</name>
+      <description><![CDATA[明治通り本前編第２版６４ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7132392,35.7190528,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>千登世橋下交差点</name>
+      <description><![CDATA[明治通り本前編第２版６４ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7132186,35.7199138,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>（池袋六ツ又交差点）</name>
+      <description><![CDATA[明治通り本前編第２版６８ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7167265,35.7334318,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>上池袋交差点</name>
+      <description><![CDATA[明治通り本前編第２版７０ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7223826,35.7386178,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>西巣鴨交差点</name>
+      <description><![CDATA[明治通り本前編第２版７２ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7280863,35.7441994,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>飛鳥山交差点</name>
+      <description><![CDATA[明治通り本前編第２版７６ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7374271,35.7508513,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>音無橋交差点</name>
+      <description><![CDATA[明治通り本前編第２版７８ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7363372,35.7521276,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>（王子駅前交差点）</name>
+      <description><![CDATA[明治通り本前編第２版８０ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7380703,35.7534199,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>溝田橋交差点</name>
+      <description><![CDATA[明治通り本前編第２版８４ページ<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7416353,35.7558978,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>田端新町三丁目交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7624226,35.7428931,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>田端新町一丁目交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7686337,35.7391909,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>宮地交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7765439,35.7369622,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>（大関横丁交差点）</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7917929,35.730029,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>泪橋交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.7994775,35.7289891,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>白鬚橋西詰交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8085096,35.7281589,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>白鬚橋東詰交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.81312,35.72756,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>東向島交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8183216,35.7224419,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>京島交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8231886,35.7174092,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>小村井交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8289455,35.7114322,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>福神橋交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8258587,35.7050182,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>亀戸四丁目交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8253688,35.70174,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>亀戸駅前</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8257638,35.6965834,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>区民センター前交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.826334,35.6893719,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>境川交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8271178,35.6771056,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>南砂四丁目交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8267763,35.6748311,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>日曹橋交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8257369,35.6699382,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>夢の島交差点</name>
+      <description><![CDATA[<br><br>N03_001: <br>N03_004: <br>N03_007: ]]></description>
+      <styleUrl>#icon-1769-FF5252</styleUrl>
+      <ExtendedData>
+        <Data name="N03_001">
+          <value/>
+        </Data>
+        <Data name="N03_004">
+          <value/>
+        </Data>
+        <Data name="N03_007">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          139.8254864,35.6468771,0
+        </coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>
