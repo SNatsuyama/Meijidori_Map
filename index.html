@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
-    <title>明治通り沿線情報マップ（データセット連動版）</title>
+    <title>明治通り沿線情報マップ（KML完全連動版）</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       html, body {
@@ -58,14 +58,14 @@
         }
         #panel {
           width: 100%;
-          height: 42vh;
+          height: 45vh;
         }
         #map {
-          height: 58vh;
+          height: 55vh;
         }
       }
     </style>
-    <!-- Google Maps JavaScript API の読み込み（必須ライブラリを含む） -->
+    <!-- Google Maps JavaScript API の読み込み -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtS9PympKieGJ8LvpIbqFn0A8l0AkJ7Qc&callback=initMap&v=weekly&libraries=marker" defer></script>
   </head>
   <body>
@@ -76,51 +76,33 @@
         <!-- 【グループ2：エリア】（OR条件） -->
         <div class="control-group">
           <strong>2. 所在区（エリア）</strong>
-          <div class="control-item">
-            <input type="checkbox" id="tag-minato" checked />
-            <label for="tag-minato">港区</label>
-          </div>
-          <div class="control-item">
-            <input type="checkbox" id="tag-shibuya" checked />
-            <label for="tag-shibuya">渋谷区</label>
-          </div>
-          <div class="control-item">
-            <input type="checkbox" id="tag-shinjuku" checked />
-            <label for="tag-shinjuku">新宿区</label>
-          </div>
+          <div class="control-item"><input type="checkbox" id="tag-minato" checked /><label for="tag-minato">港区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-shibuya" checked /><label for="tag-shibuya">渋谷区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-shinjuku" checked /><label for="tag-shinjuku">新宿区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-toshima" checked /><label for="tag-toshima">豊島区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-kita" checked /><label for="tag-kita">北区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-arakawa" checked /><label for="tag-arakawa">荒川区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-taito" checked /><label for="tag-taito">台東区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-sumida" checked /><label for="tag-sumida">墨田区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-koto" checked /><label for="tag-koto">江東区</label></div>
         </div>
 
         <!-- 【グループ1：スポット種別】（OR条件） -->
         <div class="control-group">
           <strong>1. スポット種別</strong>
-          <div class="control-item">
-            <input type="checkbox" id="tag-photo" checked />
-            <label for="tag-photo">フォトスポット</label>
-          </div>
-          <div class="control-item">
-            <input type="checkbox" id="tag-intersection" checked />
-            <label for="tag-intersection">交差点</label>
-          </div>
-          <div class="control-item">
-            <input type="checkbox" id="tag-crossing" checked />
-            <label for="tag-crossing">交差道路</label>
-          </div>
-          <div class="control-item">
-            <input type="checkbox" id="tag-restaurant" checked />
-            <label for="tag-restaurant">おすすめ飲食店</label>
-          </div>
-          <div class="control-item">
-            <input type="checkbox" id="tag-station" checked />
-            <label for="tag-station">周辺駅</label>
-          </div>
+          <div class="control-item"><input type="checkbox" id="tag-photo" checked /><label for="tag-photo">フォトスポット</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-intersection" checked /><label for="tag-intersection">交差点</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-crossing" checked /><label for="tag-crossing">交差道路</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-restaurant" checked /><label for="tag-restaurant">おすすめ飲食店</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-station" checked /><label for="tag-station">周辺駅</label></div>
         </div>
 
-        <!-- 基本ライン -->
+        <!-- 基本ライン（明治通り）の表示切替 -->
         <div class="control-group">
           <strong>基本インフラ</strong>
           <div class="control-item">
             <input type="checkbox" id="toggle-meiji-line" checked />
-            <label for="toggle-meiji-line">明治通り</label>
+            <label for="toggle-meiji-line">明治通り本体</label>
           </div>
         </div>
       </div>
@@ -132,9 +114,8 @@
       let map;
       let infoWindow;
       
-      // データセット内のフィーチャー（アイテム）を一括管理する配列
-      const mapItems = [];
-      const staticLayers = {};
+      const kmlLayersList = [];
+      const staticLayers = {}; // 明治通り本体用の管理
 
       async function initMap() {
         const Map = google.maps.Map;
@@ -143,161 +124,104 @@
         infoWindow = new InfoWindow();
 
         map = new Map(document.getElementById("map"), {
-          center: { lat: 35.675, lng: 139.708 }, // 港区・渋谷区・新宿区が収まる中心
-          zoom: 13,
-          mapId: "fb56929676bfd00eebae2174", // お客様のマップID
+          center: { lat: 35.700, lng: 139.740 }, // 全エリア（港区〜江東区）が見渡せる初期位置
+          zoom: 12,
+          mapId: "fb56929676bfd00eebae2174",
           mapTypeControl: false,
         });
 
         // ==========================================
+        // ★複数KMLファイルの読み込みとタグの紐付け
         // ==========================================
-        // ★複数データセットの読み込み
-        // ==========================================
-        const projectId = "project-de2834d8-9679-4850-b77"; // お客様のプロジェクトID
-        const apiKey = "AIzaSyAtS9PympKieGJ8LvpIbqFn0A8l0AkJ7Qc"; // お客様のAPIキー
+        const kmlConfigs = [
+          {
+            // 1. 交差道路（前回のKML）
+            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/%E4%BA%A4%E5%B7%AE%E9%81%93%E8%B7%AF%E3%83%BB%E9%96%A2%E9%80%A3%E9%81%93%E8%B7%AF%E3%80%90%E8%A5%BF%E5%81%B4%E5%8C%BA%E9%96%93%E3%80%91.kml",
+            areaTag: null,            // 特定の区に属さない（全体）
+            categoryTag: "crossing"
+          },
+          // ★2. 【新規】明治通り本体をKMLで追加
+          {
+            // ※ここにアップロードした明治通り本体KMLの Raw URL を貼り付けてください
+            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/%E6%98%8E%E6%B2%BB%E9%80%9A%E3%82%8A.kml", 
+            isMeijiLine: true         // 明治通り本体として特別フラグを立てて管理
+          },
+          // 他のデータ（駅、フォト、飲食店）のKMLをアップロードした場合は、ここに {url: "...", areaTag: "...", categoryTag: "..."} を増やします。
+          {
+            // 3. 交差点
+            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/%E4%BA%A4%E5%B7%AE%E7%82%B9.kml",
+            areaTag: null,            // 特定の区に属さない（全体）
+            categoryTag: "intersection"
+          },
 
-        // ★読み込みたいデータセットIDをここに並べてください（何個でも増やせます）
-        const datasetIds = [
-          "d9cb5975-0e13-4719-b845-f27ca6d2e416", // 1つ目のデータセットID（例：区界）
-          "b7e70f75-9116-43aa-8efe-f55c1d584c8c",  // 2つ目のデータセットID（例：交差点）
-          "8cb2532e-105e-4dea-8ff5-a56f8c344e2d"  // 2つ目のデータセットID（例：道路西）
+          {
+            // 3. 区境
+            url: "https://github.com/SNatsuyama/Meijidori_Map/raw/refs/heads/main/%E6%98%8E%E6%B2%BB%E9%80%9A%E3%82%8A%E5%8C%BA%E5%A2%83.kml",
+            areaTag: null,            // 特定の区に属さない（全体）
+            categoryTag: "null"
+          },
         ];
 
-        // Google Mapsのデータレイヤー機能を使用して、データをまとめてインポート
-        const dataLayer = new google.maps.Data({ map: map });
-        let loadCount = 0;
+        // 各KMLファイルを順番に地図に読み込みます
+        kmlConfigs.forEach(config => {
+          const kmlLayer = new google.maps.KmlLayer({
+            url: config.url,
+            suppressInfoWindows: false, 
+            preserveViewport: true,     
+            map: map
+          });
 
-        // 全データセットをループ処理で順次読み込みます
-        datasetIds.forEach(datasetId => {
-          dataLayer.loadGeoJson(
-            `https://mapsplatformdatasets.googleapis.com/v1/projects/${projectId}/datasets/${datasetId}:features?key=${apiKey}`,
-            null,
-            function(features) {
-              features.forEach(feature => {
-                const area = feature.getProperty("areaTag");
-                const category = feature.getProperty("categoryTag");
-                const name = feature.getProperty("name") || "名称未設定";
-                const desc = feature.getProperty("description") || "詳細情報はありません。";
-
-                mapItems.push({
-                  feature: feature,
-                  areaTag: area,
-                  categoryTag: category,
-                  name: name,
-                  description: desc
-                });
-              });
-
-              // すべてのデータセットの読み込みが完了したらフィルターを実行します
-              loadCount++;
-              if (loadCount === datasetIds.length) {
-                applyUrlParams();
-                updateFilter();
-              }
-            }
-          );
-        });
-
-
-        // ==========================================
-        // 地図上の要素がクリックされた時の挙動（ポップアップ表示）
-        // ==========================================
-        dataLayer.addListener('click', function(event) {
-          const feature = event.feature;
-          const name = feature.getProperty("name") || "詳細情報";
-          const desc = feature.getProperty("description") || "情報はありません。";
-
-          // ポップアップ（InfoWindow）にタイトルと説明を設定
-          infoWindow.setContent(`<h3>${name}</h3><p>${desc}</p>`);
-          infoWindow.setPosition(event.latLng);
-          infoWindow.open(map);
-        });
-
-        // ==========================================
-        // 地図データのスタイリング（ピンをカスタムアイコンに変更する処理）
-        // ==========================================
-        dataLayer.setStyle(function(feature) {
-          const category = feature.getProperty("categoryTag");
-          
-          // カテゴリTagに応じてアイコンを動的に変更
-          if (category === "photo") {
-            return { icon: "https://maps.google.com/mapfiles/kml/shapes/camera.png" }; // カメラ
-          } else if (category === "restaurant") {
-            return { icon: "https://maps.google.com/mapfiles/kml/shapes/dining.png" }; // 飲食店
-          } else if (category === "station") {
-            return { icon: "https://maps.google.com/mapfiles/kml/shapes/rail.png" }; // 駅
-          } else if (category === "intersection") {
-            return {
-              // 交差点は青い丸ピン
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                fillColor: '#0055FF',
-                fillOpacity: 0.9,
-                strokeWeight: 2,
-                strokeColor: '#FFFFFF',
-                scale: 8
-              }
-            };
-          } else if (category === "crossing") {
-            // 交差道路（ライン）のスタイル
-            return {
-              strokeColor: "#0055FF",
-              strokeWeight: 4,
-              strokeOpacity: 0.8
-            };
+          if (config.isMeijiLine) {
+            // 明治通り本体は個別でトグル制御するため別枠に保存
+            staticLayers['meiji'] = kmlLayer;
+          } else {
+            // 一般のスポット・道路データはフィルター制御リストに保存
+            kmlLayersList.push({
+              layer: kmlLayer,
+              areaTag: config.areaTag,
+              categoryTag: config.categoryTag
+            });
           }
-          
-          // デフォルトのスタイル（ポリゴンなど）
-          const color = feature.getProperty("strokeColor") || "#33cc33";
-          return {
-            strokeColor: color,
-            strokeWeight: 2,
-            fillColor: color,
-            fillOpacity: 0.12
-          };
         });
 
-        // ==========================================
-        // 明治通り本体ラインの個別設定（常に表示する軸）
-        // ==========================================
-        staticLayers['meiji'] = new google.maps.Polyline({
-          path: [
-            { lat: 35.6482, lng: 139.7111 }, { lat: 35.6698, lng: 139.7049 },
-            { lat: 35.6896, lng: 139.7006 }, { lat: 35.7295, lng: 139.7109 }
-          ],
-          strokeColor: "#FF0000", strokeOpacity: 1.0, strokeWeight: 6,
-          map: map
-        });
-        
-        staticLayers['meiji'].addListener('click', (event) => {
-          infoWindow.setContent("<h3>明治通り</h3><p>今回の情報マップのメインルートとなる大通りです。</p>");
-          infoWindow.setPosition(event.latLng);
-          infoWindow.open(map);
-        });
+        // フィルター初期化
+        applyUrlParams();
+        updateFilter();
 
         // フィルターイベントの監視設定
         const allFilters = [
-          "tag-minato", "tag-shibuya", "tag-shinjuku",
+          "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taito", "tag-sumida", "tag-koto",
           "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station"
         ];
         allFilters.forEach(id => {
           document.getElementById(id).addEventListener("change", updateFilter);
         });
 
+        // 明治通り本体のトグルスイッチ監視
         document.getElementById("toggle-meiji-line").addEventListener("change", (e) => {
-          staticLayers['meiji'].setMap(e.target.checked ? map : null);
+          if (staticLayers['meiji']) {
+            staticLayers['meiji'].setMap(e.target.checked ? map : null);
+          }
         });
       }
 
       // ==========================================
-      // 【グループ内OR】×【グループ間AND】の処理
+      // 【グループ内OR】×【グループ間AND】制御ロジック
       // ==========================================
       function updateFilter() {
+        // 現在チェックがONのエリア（グループ2）
         const activeAreas = [];
         if (document.getElementById("tag-minato").checked) activeAreas.push("minato");
         if (document.getElementById("tag-shibuya").checked) activeAreas.push("shibuya");
         if (document.getElementById("tag-shinjuku").checked) activeAreas.push("shinjuku");
+        if (document.getElementById("tag-toshima").checked) activeAreas.push("toshima");
+        if (document.getElementById("tag-kita").checked) activeAreas.push("kita");
+        if (document.getElementById("tag-arakawa").checked) activeAreas.push("arakawa");
+        if (document.getElementById("tag-taito").checked) activeAreas.push("taito");
+        if (document.getElementById("tag-sumida").checked) activeAreas.push("sumida");
+        if (document.getElementById("tag-koto").checked) activeAreas.push("koto");
 
+        // 現在チェックがONのカテゴリ（グループ1）
         const activeCategories = [];
         if (document.getElementById("tag-photo").checked) activeCategories.push("photo");
         if (document.getElementById("tag-intersection").checked) activeCategories.push("intersection");
@@ -305,23 +229,13 @@
         if (document.getElementById("tag-restaurant").checked) activeCategories.push("restaurant");
         if (document.getElementById("tag-station").checked) activeCategories.push("station");
 
-        // mapItems配列を評価し、Google Maps DataLayerに非表示/表示の反映を行う
-        mapItems.forEach(item => {
+        kmlLayersList.forEach(item => {
           const areaMatch = !item.areaTag || activeAreas.includes(item.areaTag);
           const categoryMatch = !item.categoryTag || activeCategories.includes(item.categoryTag);
           
           const shouldShow = areaMatch && categoryMatch;
 
-          // データレイヤーから特定のフィーチャーを隠す（追加/削除で制御します）
-          if (shouldShow) {
-            // 表示する場合はデータレイヤーに再追加（重複追加を防ぐために既に描写されていない場合のみ）
-            if (!map.data.contains(item.feature)) {
-              map.data.add(item.feature);
-            }
-          } else {
-            // 非表示にする場合はデータレイヤーから削除
-            map.data.remove(item.feature);
-          }
+          item.layer.setMap(shouldShow ? map : null);
         });
       }
 
@@ -334,7 +248,7 @@
 
         if (view) {
           const checkboxes = [
-            "tag-minato", "tag-shibuya", "tag-shinjuku",
+            "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taito", "tag-sumida", "tag-koto",
             "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station"
           ];
           checkboxes.forEach(id => document.getElementById(id).checked = false);
@@ -347,15 +261,12 @@
             document.getElementById("tag-restaurant").checked = true;
             document.getElementById("tag-station").checked = true;
           } else if (view === "restaurant") {
+            // 全エリア
             document.getElementById("tag-minato").checked = true;
             document.getElementById("tag-shibuya").checked = true;
             document.getElementById("tag-shinjuku").checked = true;
+            document.getElementById("tag-toshima").checked = true;
             document.getElementById("tag-restaurant").checked = true;
-          } else if (view === "station") {
-            document.getElementById("tag-minato").checked = true;
-            document.getElementById("tag-shibuya").checked = true;
-            document.getElementById("tag-shinjuku").checked = true;
-            document.getElementById("tag-station").checked = true;
           }
         }
       }
