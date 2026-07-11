@@ -32,7 +32,7 @@
         "wikimedia_commons": "Category:Taitō, Tokyo",
         "wikipedia": "ja:台東区",
         "areaTag": "taitou",
-        "categoryTag" :"region"
+        "categoryTag": "region"
       },
       "geometry": {
         "type": "Polygon",
