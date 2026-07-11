@@ -94,32 +94,30 @@
   <body>
     <div id="container">
       <div id="panel">
+        <h3>沿線フィルターマップ</h3>
+        
+        <!-- ★修正：詳細情報エリアを上に移動！ -->
+        <div id="info-box">
+          <h4>詳細情報</h4>
+          <div id="info-content">
+            <p>地図上のアイコンや道路をクリックすると、ここに詳細が表示されるわよ！</p>
+          </div>
+        </div>
+
+        <!-- フィルター類をこの下にまとめる -->
         <div>
-          <h3>沿線フィルターマップ</h3>
-          
           <!-- 【グループ2：エリア】（OR条件） -->
           <div class="control-group">
             <strong>2. 所在区（エリア）</strong>
             <div class="control-item"><input type="checkbox" id="tag-minato" checked /><label for="tag-minato">港区</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-shibuya" checked /><label for="tag-shibuya">渋谷区</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-shinjuku" checked /><label for="tag-shinjuku">新宿区</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-toshima" checked /><label for="tag-toshima">豊島区</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-kita" checked /><label for="tag-kita">北区</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-arakawa" checked /><label for="tag-arakawa">荒川区</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-taitou" checked /><label for="tag-taitou">台東区</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-sumida" checked /><label for="tag-sumida">墨田区</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-koutou" checked /><label for="tag-koutou">江東区</label></div>
+            <!-- ...残りのチェックボックス... -->
           </div>
 
           <!-- 【グループ1：スポット種別】（OR条件） -->
           <div class="control-group">
             <strong>1. スポット種別</strong>
             <div class="control-item"><input type="checkbox" id="tag-region" checked /><label for="tag-region">区の塗り分け</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-photo" checked /><label for="tag-photo">フォトスポット</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-intersection" checked /><label for="tag-intersection">交差点</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-crossing" checked /><label for="tag-crossing">交差道路</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-restaurant" checked /><label for="tag-restaurant">おすすめ飲食店</label></div>
-            <div class="control-item"><input type="checkbox" id="tag-station" checked /><label for="tag-station">周辺駅</label></div>
+            <!-- ...残りのチェックボックス... -->
           </div>
 
           <!-- 明治通り本体の表示切替 -->
@@ -131,17 +129,7 @@
             </div>
           </div>
         </div>
-        
-        <!-- ★追加：詳細情報エリア -->
-        <div id="info-box">
-          <h4>詳細情報</h4>
-          <div id="info-content">
-            <p>地図上のアイコンや道路をクリックすると、ここに詳細が表示されるわよ！</p>
-          </div>
-        </div>
-
       </div>
-
       <div id="map"></div>
     </div>
 
@@ -346,6 +334,7 @@
           style.fillColor = regionColor;
           style.fillOpacity = 0.4;
           style.zIndex = 1;
+          style.clickable = false;
         }
 
         return style;
