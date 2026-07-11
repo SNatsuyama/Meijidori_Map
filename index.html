@@ -65,8 +65,7 @@
         }
       }
     </style>
-    <!-- Google Maps JavaScript API の読み込み -->
-        <!-- Google Maps JavaScript API の読み込み（高速非同期ロード版） -->
+    <!-- Google Maps JavaScript API の読み込み（高速非同期ロード版） -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtS9PympKieGJ8LvpIbqFn0A8l0AkJ7Qc&callback=initMap&v=weekly&libraries=marker" async defer></script>
   </head>
   <body>
@@ -84,14 +83,14 @@
           <div class="control-item"><input type="checkbox" id="tag-kita" checked /><label for="tag-kita">北区</label></div>
           <div class="control-item"><input type="checkbox" id="tag-arakawa" checked /><label for="tag-arakawa">荒川区</label></div>
           <div class="control-item"><input type="checkbox" id="tag-taitou" checked /><label for="tag-taitou">台東区</label></div>
-          <div class="control-item"><input Pattern="tag-sumida" id="tag-sumida" type="checkbox" checked /><label for="tag-sumida">墨田区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-sumida" checked /><label for="tag-sumida">墨田区</label></div>
           <div class="control-item"><input type="checkbox" id="tag-koutou" checked /><label for="tag-koutou">江東区</label></div>
         </div>
 
         <!-- 【グループ1：スポット種別】（OR条件） -->
         <div class="control-group">
           <strong>1. スポット種別</strong>
-          <div class="control-item"><input type="checkbox" id="tag-region" checked /><label for="tag-region">区の塗り分け</label></div> <!-- ★【新規】区の塗り分けカテゴリ -->
+          <div class="control-item"><input type="checkbox" id="tag-region" checked /><label for="tag-region">区の塗り分け</label></div>
           <div class="control-item"><input type="checkbox" id="tag-photo" checked /><label for="tag-photo">フォトスポット</label></div>
           <div class="control-item"><input type="checkbox" id="tag-intersection" checked /><label for="tag-intersection">交差点</label></div>
           <div class="control-item"><input type="checkbox" id="tag-crossing" checked /><label for="tag-crossing">交差道路</label></div>
@@ -116,8 +115,9 @@
       let map;
       let infoWindow;
       
-      const mapItems = []; 
-      const staticLayers = {}; 
+      // ★複数のデータレイヤーを統合
+      let mapDataLayer;
+      let meijiLayer; // 明治通り本体は単独で制御するから分けたわ
 
       async function initMap() {
         const Map = google.maps.Map;
@@ -132,170 +132,107 @@
           mapTypeControl: false,
         });
 
+        // 共通レイヤーの作成
+        mapDataLayer = new google.maps.Data({ map: map });
+        meijiLayer = new google.maps.Data({ map: map });
+
         // ==========================================
         // ★複数GeoJSONファイルの読み込みと連動設定
         // ==========================================
-                // ==========================================
-        // ★複数GeoJSONファイルの読み込みと連動設定（CORS対策済URL）
-        // ==========================================
         const geoJsonConfigs = [
-          {
-            // 1. 交差道路
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/crossing_w.geojson",
-            areaTag: null,
-            categoryTag: "crossing"
-          },
-          {
-            // 2. 明治通り本体
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/meijidori.geojson",
-            isMeijiLine: true
-          },
-          {
-            // 3. 港区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/minato.geojson",
-            areaTag: "minato",
-            categoryTag: "region" // 区の塗り分けカテゴリ
-          },
-          {
-            // 4. 渋谷区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/shibuya.geojson",
-            areaTag: "shibuya",
-            categoryTag: "region" // 区の塗り分けカテゴリ
-          },
-          {
-            // 5.新宿区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/shinjuku.geojson",
-            areaTag: "shinjuku",
-            categoryTag: "region" // 区の塗り分けカテゴリ
-          },
-          {
-            // 6.豊島区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/toshima.geojson",
-            areaTag: "toshima",
-            categoryTag: "region" // 区の塗り分けカテゴリ
-          },
-          {
-            // 7.北区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/kita.geojson",
-            areaTag: "kita",
-            categoryTag: "region" // 区の塗り分けカテゴリ
-          },
-          {
-            // 8.荒川区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/arakawa.geojson",
-            areaTag: "arakawa",
-            categoryTag: "region" // 区の塗り分けカテゴリ
-          },
-          {
-            // 9.台東区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/taitou.geojson",
-            areaTag: "taitou",
-            categoryTag: "region" // 区の塗り分けカテゴリ
-          },
-          {
-            // 10.墨田区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/sumida.geojson",
-            areaTag: "sumida",
-            categoryTag: "region" // 区の塗り分けカテゴリ
-          },
-          {
-            // 11.江東区ポリゴン
-            url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/koutou.geojson",
-            areaTag: "koutou",
-            categoryTag: "region" // 区の塗り分けカテゴリ
-          }
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/crossing_w.geojson", categoryTag: "crossing" },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/meijidori.geojson", isMeijiLine: true },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/minato.geojson", areaTag: "minato", categoryTag: "region" },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/shibuya.geojson", areaTag: "shibuya", categoryTag: "region" },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/shinjuku.geojson", areaTag: "shinjuku", categoryTag: "region" },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/toshima.geojson", areaTag: "toshima", categoryTag: "region" },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/kita.geojson", areaTag: "kita", categoryTag: "region" },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/arakawa.geojson", areaTag: "arakawa", categoryTag: "region" },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/taitou.geojson", areaTag: "taitou", categoryTag: "region" },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/sumida.geojson", areaTag: "sumida", categoryTag: "region" },
+          { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/koutou.geojson", areaTag: "koutou", categoryTag: "region" }
         ];
 
-
         geoJsonConfigs.forEach(config => {
-          const tempLayer = new google.maps.Data();
+          if (config.isMeijiLine) {
+            meijiLayer.loadGeoJson(config.url);
+          } else {
+            mapDataLayer.loadGeoJson(config.url, null, function(features) {
+              features.forEach(feature => {
+                // GeoJSONのプロパティを優先。なければconfigからセット
+                const category = feature.getProperty("categoryTag") || config.categoryTag;
+                feature.setProperty("categoryTag", category);
 
-          tempLayer.loadGeoJson(config.url, null, function(features) {
-            features.forEach(feature => {
-              // プロパティ（属性）を取得
-              const area = feature.getProperty("areaTag") || config.areaTag;
-              // ★KML/GeoJSONファイル自体にcategoryTag属性がない、かつconfigでregionが指定されている場合を網羅
-              const category = feature.getProperty("categoryTag") || config.categoryTag;
-              const name = feature.getProperty("name") || "名称未設定";
-              const desc = feature.getProperty("description") || "";
-
-              const itemData = {
-                layer: tempLayer,
-                feature: feature,
-                areaTag: area,
-                categoryTag: category,
-                name: name,
-                description: desc
-              };
-
-              if (config.isMeijiLine) {
-                staticLayers['meiji'] = tempLayer;
-              } else {
-                mapItems.push(itemData);
-              }
-            });
-
-            updateFilter();
-          });
-
-          tempLayer.addListener('click', function(event) {
-            const name = event.feature.getProperty("name") || "詳細情報";
-            const desc = event.feature.getProperty("description") || "";
-            infoWindow.setContent(`<h3>${name}</h3><p>${desc}</p>`);
-            infoWindow.setPosition(event.latLng);
-            infoWindow.open(map);
-          });
-
-          tempLayer.setStyle(function(feature) {
-            const category = feature.getProperty("categoryTag") || config.categoryTag;
-            const isMeiji = config.isMeijiLine;
-
-            if (isMeiji) {
-              return { strokeColor: "#FF0000", strokeWeight: 6, strokeOpacity: 1.0 };
-            }
-
-            if (category === "crossing") {
-              return { strokeColor: "#0055FF", strokeWeight: 4, strokeOpacity: 0.8 };
-            } else if (category === "photo") {
-              return { icon: "https://maps.google.com/mapfiles/kml/shapes/camera.png" };
-            } else if (category === "restaurant") {
-              return { icon: "https://maps.google.com/mapfiles/kml/shapes/dining.png" };
-            } else if (category === "station") {
-              return { icon: "https://maps.google.com/mapfiles/kml/shapes/rail.png" };
-            } else if (category === "intersection") {
-              return {
-                icon: {
-                  path: google.maps.SymbolPath.CIRCLE,
-                  fillColor: '#0055FF',
-                  fillOpacity: 0.9,
-                  strokeWeight: 2,
-                  strokeColor: '#FFFFFF',
-                  scale: 8
+                // エリアタグの複数対応（文字列のカンマ区切りなどを配列に直して保持させるの）
+                let areaVal = feature.getProperty("areaTag") || config.areaTag;
+                if (areaVal) {
+                  if (typeof areaVal === 'string') {
+                    areaVal = areaVal.split(',').map(s => s.trim());
+                  }
+                } else {
+                  areaVal = [];
                 }
-              };
-            }
+                feature.setProperty("areaTagsArray", areaVal);
+              });
+              
+              // 読み込み終わったらフィルターを更新する
+              updateFilter();
+            });
+          }
+        });
 
-            // ★カテゴリが 'region'（区のポリゴン）のときのデフォルト配色を設定
-            if (category === "region") {
-              const regionColor = feature.getProperty("fillColor") || "#33cc33";
-              return {
-                strokeColor: regionColor,
-                strokeWeight: 2,
-                strokeOpacity: 0.8,
-                fillColor: regionColor,
-                fillOpacity: 0.15 // 半透明
-              };
-            }
+        // 情報ウィンドウの表示
+        mapDataLayer.addListener('click', function(event) {
+          const name = event.feature.getProperty("name") || "詳細情報";
+          const desc = event.feature.getProperty("description") || "";
+          infoWindow.setContent(`<h3>${name}</h3><p>${desc}</p>`);
+          infoWindow.setPosition(event.latLng);
+          infoWindow.open(map);
+        });
 
+        // スタイル設定（明治通り本体）
+        meijiLayer.setStyle({ strokeColor: "#FF0000", strokeWeight: 6, strokeOpacity: 1.0 });
+
+        // スタイル設定（その他の要素）
+        mapDataLayer.setStyle(function(feature) {
+          const category = feature.getProperty("categoryTag");
+
+          if (category === "crossing") {
+            return { strokeColor: "#0055FF", strokeWeight: 4, strokeOpacity: 0.8 };
+          } else if (category === "photo") {
+            return { icon: "https://maps.google.com/mapfiles/kml/shapes/camera.png" };
+          } else if (category === "restaurant") {
+            return { icon: "https://maps.google.com/mapfiles/kml/shapes/dining.png" };
+          } else if (category === "station") {
+            return { icon: "https://maps.google.com/mapfiles/kml/shapes/rail.png" };
+          } else if (category === "intersection") {
             return {
-              strokeColor: "#33cc33",
-              strokeWeight: 2,
-              fillColor: "#33cc33",
-              fillOpacity: 0.12
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: '#0055FF',
+                fillOpacity: 0.9,
+                strokeWeight: 2,
+                strokeColor: '#FFFFFF',
+                scale: 8
+              }
             };
-          });
+          } else if (category === "region") {
+            const regionColor = feature.getProperty("fillColor") || "#33cc33";
+            return {
+              strokeColor: regionColor,
+              strokeWeight: 2,
+              strokeOpacity: 0.8,
+              fillColor: regionColor,
+              fillOpacity: 0.15
+            };
+          }
 
-          tempLayer.setMap(map);
+          return {
+            strokeColor: "#33cc33",
+            strokeWeight: 2,
+            fillColor: "#33cc33",
+            fillOpacity: 0.12
+          };
         });
 
         // フィルターイベント監視
@@ -307,9 +244,12 @@
           document.getElementById(id).addEventListener("change", updateFilter);
         });
 
+        // 明治通り本体の表示切替
         document.getElementById("toggle-meiji-line").addEventListener("change", (e) => {
-          if (staticLayers['meiji']) {
-            staticLayers['meiji'].setMap(e.target.checked ? map : null);
+          if (e.target.checked) {
+            meijiLayer.setMap(map);
+          } else {
+            meijiLayer.setMap(null);
           }
         });
 
@@ -332,27 +272,30 @@
         if (document.getElementById("tag-koutou").checked) activeAreas.push("koutou");
 
         const activeCategories = [];
-        if (document.getElementById("tag-region").checked) activeCategories.push("region"); // ★
+        if (document.getElementById("tag-region").checked) activeCategories.push("region");
         if (document.getElementById("tag-photo").checked) activeCategories.push("photo");
         if (document.getElementById("tag-intersection").checked) activeCategories.push("intersection");
         if (document.getElementById("tag-crossing").checked) activeCategories.push("crossing");
         if (document.getElementById("tag-restaurant").checked) activeCategories.push("restaurant");
         if (document.getElementById("tag-station").checked) activeCategories.push("station");
 
-        mapItems.forEach(item => {
-          const areaMatch = !item.areaTag || activeAreas.includes(item.areaTag);
-          const categoryMatch = !item.categoryTag || activeCategories.includes(item.categoryTag);
-          
-          const shouldShow = areaMatch && categoryMatch;
+        if (mapDataLayer) {
+          mapDataLayer.forEach(feature => {
+            const category = feature.getProperty("categoryTag");
+            const areaTagsArray = feature.getProperty("areaTagsArray") || [];
 
-          if (shouldShow) {
-            if (!item.layer.getMap()) {
-              item.layer.setMap(map);
-            }
-          } else {
-            item.layer.setMap(null);
-          }
-        });
+            const categoryMatch = !category || activeCategories.includes(category);
+            
+            // ★ここが大事！
+            // 配列の中に、チェックされてるエリア（activeAreas）が1つでも含まれていればOKにするの！
+            const areaMatch = areaTagsArray.length === 0 || areaTagsArray.some(tag => activeAreas.includes(tag));
+            
+            const shouldShow = areaMatch && categoryMatch;
+
+            // setMapじゃなくて、各フィーチャーのスタイル（visible）を上書きして制御するわ
+            mapDataLayer.overrideStyle(feature, { visible: shouldShow });
+          });
+        }
       }
 
       // ==========================================
@@ -383,6 +326,8 @@
             document.getElementById("tag-shinjuku").checked = true;
             document.getElementById("tag-restaurant").checked = true;
           }
+          // パラメータ適用後にフィルターを実行
+          updateFilter();
         }
       }
 
