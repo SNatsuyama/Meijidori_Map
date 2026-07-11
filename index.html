@@ -85,7 +85,7 @@
           <div class="control-item"><input type="checkbox" id="tag-arakawa" checked /><label for="tag-arakawa">荒川区</label></div>
           <div class="control-item"><input type="checkbox" id="tag-taitou" checked /><label for="tag-taitou">台東区</label></div>
           <div class="control-item"><input Pattern="tag-sumida" id="tag-sumida" type="checkbox" checked /><label for="tag-sumida">墨田区</label></div>
-          <div class="control-item"><input type="checkbox" id="tag-kotou" checked /><label for="tag-kotou">江東区</label></div>
+          <div class="control-item"><input type="checkbox" id="tag-koutou" checked /><label for="tag-koutou">江東区</label></div>
         </div>
 
         <!-- 【グループ1：スポット種別】（OR条件） -->
@@ -300,7 +300,7 @@
 
         // フィルターイベント監視
         const allFilters = [
-          "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taitou", "tag-sumida", "tag-kotou",
+          "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taitou", "tag-sumida", "tag-koutou",
           "tag-region", "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station"
         ];
         allFilters.forEach(id => {
@@ -329,7 +329,7 @@
         if (document.getElementById("tag-arakawa").checked) activeAreas.push("arakawa");
         if (document.getElementById("tag-taitou").checked) activeAreas.push("taitou");
         if (document.getElementById("tag-sumida").checked) activeAreas.push("sumida");
-        if (document.getElementById("tag-kotou").checked) activeAreas.push("kotou");
+        if (document.getElementById("tag-koutou").checked) activeAreas.push("koutou");
 
         const activeCategories = [];
         if (document.getElementById("tag-region").checked) activeCategories.push("region"); // ★
@@ -364,7 +364,7 @@
 
         if (view) {
           const checkboxes = [
-            "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taitou", "tag-sumida", "tag-kotou",
+            "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taitou", "tag-sumida", "tag-koutou",
             "tag-region", "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station"
           ];
           checkboxes.forEach(id => document.getElementById(id).checked = false);
