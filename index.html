@@ -30,16 +30,14 @@
         flex-direction: column;
       }
       
-      /* ★追加：上部の固定エリア（タイトルと詳細情報） */
       #panel-header {
         padding: 20px 20px 0 20px;
-        flex-shrink: 0; /* ここは縮ませない！ */
+        flex-shrink: 0;
       }
       
-      /* ★追加：下のスクロールするエリア（フィルター類） */
       #panel-scroll {
         padding: 0 20px 20px 20px;
-        overflow-y: auto; /* ここだけスクロールさせるの！ */
+        overflow-y: auto;
         flex: 1;
       }
 
@@ -67,7 +65,6 @@
         cursor: pointer;
       }
       
-      /* 詳細情報エリアのスタイル */
       #info-box {
         margin-bottom: 15px;
         padding-bottom: 15px;
@@ -103,7 +100,6 @@
   <body>
     <div id="container">
       <div id="panel">
-        <!-- 上部の固定エリア -->
         <div id="panel-header">
           <h3>沿線フィルターマップ</h3>
           <div id="info-box">
@@ -114,9 +110,7 @@
           </div>
         </div>
 
-        <!-- スクロールするフィルターエリア -->
         <div id="panel-scroll">
-          <!-- 【グループ2：エリア】（OR条件） -->
           <div class="control-group">
             <strong>2. 所在区（エリア）</strong>
             <div class="control-item"><input type="checkbox" id="tag-minato" checked /><label for="tag-minato">港区</label></div>
@@ -130,7 +124,6 @@
             <div class="control-item"><input type="checkbox" id="tag-koutou" checked /><label for="tag-koutou">江東区</label></div>
           </div>
 
-          <!-- 【グループ1：スポット種別】（OR条件） -->
           <div class="control-group">
             <strong>1. スポット種別</strong>
             <div class="control-item"><input type="checkbox" id="tag-region" checked /><label for="tag-region">区の塗り分け</label></div>
@@ -141,7 +134,6 @@
             <div class="control-item"><input type="checkbox" id="tag-station" checked /><label for="tag-station">周辺駅</label></div>
           </div>
 
-          <!-- 明治通り本体の表示切替 -->
           <div class="control-group">
             <strong>基本インフラ</strong>
             <div class="control-item">
@@ -157,10 +149,8 @@
 
     <script>
       let map;
-      
       let mapDataLayer;
       let meijiLayer;
-      
       let activeAreas = [];
       let activeCategories = [];
       let selectedFeatureName = null;
@@ -199,8 +189,26 @@
 
       function clearInfo() {
         selectedFeatureName = null;
-        mapDataLayer.setStyle(getFeatureStyle);
+        updateAllStyles(); // ★ここも変更したわ！
         document.getElementById('info-content').innerHTML = '<p>地図上のアイコンや道路をクリックすると、ここに詳細が表示されるわよ！</p>';
+      }
+
+      // ★新機能：両方のレイヤーの見た目を一気に更新する関数よ！
+      function updateAllStyles() {
+        if (mapDataLayer) mapDataLayer.setStyle(getFeatureStyle);
+        if (meijiLayer) meijiLayer.setStyle(getMeijiStyle);
+      }
+
+      // ★新機能：明治通り専用のスタイル設定！
+      function getMeijiStyle(feature) {
+        const name = feature.getProperty("Name") || feature.getProperty("name") || "明治通り";
+        const isSelected = (selectedFeatureName && name === selectedFeatureName);
+        return { 
+          strokeColor: "#FF0000", 
+          strokeWeight: isSelected ? 10 : 6, // 選ばれたらさらに太く強調するの！
+          strokeOpacity: 1.0,
+          zIndex: isSelected ? 25 : 15
+        };
       }
 
       async function initMap() {
@@ -213,18 +221,13 @@
           mapTypeControl: false,
         });
 
-        // 何もないところをクリックした時は情報をリセット
         map.addListener('click', clearInfo);
 
         mapDataLayer = new google.maps.Data({ map: map });
         meijiLayer = new google.maps.Data({ map: map });
 
-        meijiLayer.setStyle({ 
-          strokeColor: "#FF0000", 
-          strokeWeight: 6, 
-          strokeOpacity: 1.0,
-          zIndex: 15
-        });
+        // 明治通りのスタイルを動的に設定
+        meijiLayer.setStyle(getMeijiStyle);
 
         const geoJsonConfigs = [
           { url: "https://raw.githubusercontent.com/SNatsuyama/Meijidori_Map/main/crossing_w.geojson", categoryTag: "crossing" },
@@ -270,13 +273,24 @@
 
         mapDataLayer.setStyle(getFeatureStyle);
 
-        // 要素クリック時のイベント
+        // ★追加：明治通りをクリックした時の処理よ！
+        meijiLayer.addListener('click', function(event) {
+          const name = event.feature.getProperty("Name") || event.feature.getProperty("name") || "明治通り";
+          const desc = event.feature.getProperty("description");
+
+          selectedFeatureName = name;
+          updateAllStyles(); // 両方のスタイルを再計算！
+
+          showInfo(name, desc);
+        });
+
+        // その他の要素をクリックした時の処理
         mapDataLayer.addListener('click', function(event) {
           const name = event.feature.getProperty("Name") || event.feature.getProperty("name") || "名称未設定";
           const desc = event.feature.getProperty("description");
 
           selectedFeatureName = name;
-          mapDataLayer.setStyle(getFeatureStyle);
+          updateAllStyles(); // 両方のスタイルを再計算！
 
           showInfo(name, desc);
         });
@@ -347,7 +361,7 @@
           style.fillColor = regionColor;
           style.fillOpacity = 0.4;
           style.zIndex = 1;
-          style.clickable = false; // ★クリック判定を無効にする！
+          style.clickable = false;
         }
 
         return style;
@@ -373,9 +387,7 @@
         if (document.getElementById("tag-restaurant").checked) activeCategories.push("restaurant");
         if (document.getElementById("tag-station").checked) activeCategories.push("station");
 
-        if (mapDataLayer) {
-          mapDataLayer.setStyle(getFeatureStyle);
-        }
+        updateAllStyles(); // ★ここも変更よ！
       }
 
       function applyUrlParams() {
