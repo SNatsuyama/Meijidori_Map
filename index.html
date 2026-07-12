@@ -178,11 +178,16 @@
       }
 
       function showInfo(name, desc) {
-        let contentHtml = `<strong>${name}</strong>`;
+        // ★名前(Name)に入っている \n や実際の改行も <br> に変換！
+        let safeName = name.replace(/\\n|\n/g, '<br>');
+        let contentHtml = `<strong style="display: block; line-height: 1.4;">${safeName}</strong>`;
+        
         if (desc) {
-          contentHtml += `<p style="margin-top: 5px;">${desc.replace(/\\n/g, '<br>')}</p>`;
+          // ★説明文(description)に入っている \n や実際の改行も <br> に変換！
+          let safeDesc = desc.replace(/\\n|\n/g, '<br>');
+          contentHtml += `<p style="margin-top: 8px;">${safeDesc}</p>`;
         } else {
-          contentHtml += `<p style="margin-top: 5px;">特に説明はないみたいね。</p>`;
+          contentHtml += `<p style="margin-top: 8px;">特に説明はないみたいね。</p>`;
         }
         document.getElementById('info-content').innerHTML = contentHtml;
       }
