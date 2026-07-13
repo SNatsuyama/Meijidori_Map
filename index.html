@@ -409,31 +409,44 @@
       }
 
       function applyUrlParams() {
+      // 各区の中心座標とズームレベル（必要に応じて微調整しなさいよ！）
+      const areaViews = {
+        "minato": { lat: 35.658, lng: 139.745, zoom: 14 },
+        "shibuya": { lat: 35.662, lng: 139.703, zoom: 14 },
+        "shinjuku": { lat: 35.693, lng: 139.703, zoom: 14 },
+        "toshima": { lat: 35.728, lng: 139.716, zoom: 14 },
+        "kita": { lat: 35.753, lng: 139.733, zoom: 14 },
+        "arakawa": { lat: 35.736, lng: 139.783, zoom: 14 },
+        "taitou": { lat: 35.712, lng: 139.779, zoom: 14 },
+        "sumida": { lat: 35.710, lng: 139.801, zoom: 14 },
+        "koutou": { lat: 35.672, lng: 139.817, zoom: 14 }
+      };
+
+      function applyUrlParams() {
         const urlParams = new URLSearchParams(window.location.search);
-        const view = urlParams.get('view');
+        const area = urlParams.get('area');
 
-        if (view) {
-          const checkboxes = [
-            "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taitou", "tag-sumida", "tag-koutou",
-            "tag-region", "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station"
+        // areaパラメーターがあって、ちゃんと定義されている区だったら実行！
+        if (area && areaViews[area]) {
+          // まずはエリアのチェックを全部外すの
+          const areaCheckboxes = [
+            "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", 
+            "tag-arakawa", "tag-taitou", "tag-sumida", "tag-koutou"
           ];
-          checkboxes.forEach(id => document.getElementById(id).checked = false);
+          areaCheckboxes.forEach(id => document.getElementById(id).checked = false);
 
-          if (view === "shibuya") {
-            document.getElementById("tag-shibuya").checked = true;
-            document.getElementById("tag-region").checked = true;
-            document.getElementById("tag-photo").checked = true;
-            document.getElementById("tag-intersection").checked = true;
-            document.getElementById("tag-crossing").checked = true;
-            document.getElementById("tag-restaurant").checked = true;
-            document.getElementById("tag-station").checked = true;
-          } else if (view === "restaurant") {
-            document.getElementById("tag-minato").checked = true;
-            document.getElementById("tag-shibuya").checked = true;
-            document.getElementById("tag-shinjuku").checked = true;
-            document.getElementById("tag-restaurant").checked = true;
+          // 指定された区だけチェックを入れるわよ！
+          const targetId = "tag-" + area;
+          if (document.getElementById(targetId)) {
+            document.getElementById(targetId).checked = true;
           }
+
+          // フィルターを更新する！
           updateFilter();
+
+          // 地図の中心とズームをその区に合わせるわ！
+          map.setCenter({ lat: areaViews[area].lat, lng: areaViews[area].lng });
+          map.setZoom(areaViews[area].zoom);
         }
       }
 
