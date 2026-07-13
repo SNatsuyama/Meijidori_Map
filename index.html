@@ -329,7 +329,25 @@
           document.getElementById(id).addEventListener("change", updateFilter);
         });
 
-        applyUrlParams();
+        // URLパラメーターを適用！ もし area 指定があったら、明治通りを選択状態にするわ！
+        const isAreaSelected = applyUrlParams();
+
+        if (isAreaSelected) {
+          // データが読み込まれるのをちょっとだけ待つのよ！（強引だけどこれが一番手っ取り早いわ）
+          setTimeout(() => {
+            // 明治通りのLayerの中身をぐるっと探して...
+            meijiLayer.forEach((feature) => {
+              const name = feature.getProperty("Name") || feature.getProperty("name");
+              // "明治通り"って名前のfeatureを見つけたら！
+              if (name === "明治通り" || name === "Meijidori") { // 念のため英語名も
+                // 選ばれたことにする！
+                selectedFeatureName = name;
+                updateAllStyles();
+                showInfo(name, feature.getProperty("description") || "明治通りです。");
+              }
+            });
+          }, 500); // 500ミリ秒くらい待てば大体読み込めてるはずよ！
+        }
       }
 
       function getFeatureStyle(feature) {
@@ -408,18 +426,18 @@
         updateAllStyles();
       }
 
-      
-      // 各区の中心座標とズームレベル（必要に応じて微調整しなさいよ！）
-      const areaViews = {
-        "minato": { lat: 35.658, lng: 139.745, zoom: 14 },
-        "shibuya": { lat: 35.662, lng: 139.703, zoom: 14 },
-        "shinjuku": { lat: 35.693, lng: 139.703, zoom: 14 },
-        "toshima": { lat: 35.728, lng: 139.716, zoom: 14 },
-        "kita": { lat: 35.753, lng: 139.733, zoom: 14 },
-        "arakawa": { lat: 35.736, lng: 139.783, zoom: 14 },
-        "taitou": { lat: 35.712, lng: 139.779, zoom: 14 },
-        "sumida": { lat: 35.710, lng: 139.801, zoom: 14 },
-        "koutou": { lat: 35.672, lng: 139.817, zoom: 14 }
+      // 各区がすっぽり収まる四角形（南西と北東の座標）を定義するわよ！
+      // 歪な形でもこれでバッチリ全体が収まるわ！
+      const areaBounds = {
+        "minato": { sw: { lat: 35.623, lng: 139.712 }, ne: { lat: 35.683, lng: 139.782 } },
+        "shibuya": { sw: { lat: 35.642, lng: 139.666 }, ne: { lat: 35.690, lng: 139.728 } },
+        "shinjuku": { sw: { lat: 35.682, lng: 139.673 }, ne: { lat: 35.730, lng: 139.746 } },
+        "toshima": { sw: { lat: 35.712, lng: 139.672 }, ne: { lat: 35.748, lng: 139.754 } },
+        "kita": { sw: { lat: 35.733, lng: 139.691 }, ne: { lat: 35.793, lng: 139.761 } },
+        "arakawa": { sw: { lat: 35.723, lng: 139.760 }, ne: { lat: 35.753, lng: 139.814 } },
+        "taitou": { sw: { lat: 35.699, lng: 139.762 }, ne: { lat: 35.733, lng: 139.814 } },
+        "sumida": { sw: { lat: 35.681, lng: 139.791 }, ne: { lat: 35.743, lng: 139.839 } },
+        "koutou": { sw: { lat: 35.581, lng: 139.769 }, ne: { lat: 35.705, lng: 139.845 } }
       };
 
       function applyUrlParams() {
@@ -427,7 +445,7 @@
         const area = urlParams.get('area');
 
         // areaパラメーターがあって、ちゃんと定義されている区だったら実行！
-        if (area && areaViews[area]) {
+        if (area && areaBounds[area]) {
           // まずはエリアのチェックを全部外すの
           const areaCheckboxes = [
             "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", 
@@ -444,10 +462,17 @@
           // フィルターを更新する！
           updateFilter();
 
-          // 地図の中心とズームをその区に合わせるわ！
-          map.setCenter({ lat: areaViews[area].lat, lng: areaViews[area].lng });
-          map.setZoom(areaViews[area].zoom);
+          // ここがポイント！Boundsを使って区全体を画面に収めるのよ！
+          const bounds = new google.maps.LatLngBounds(
+            areaBounds[area].sw,
+            areaBounds[area].ne
+          );
+          // 少し余白(padding)を持たせて表示するわ。スマホとかだとキツキツになっちゃうからね！
+          map.fitBounds(bounds, { top: 20, bottom: 20, left: 20, right: 20 });
+          
+          return true; // areaパラメーターが有効だったことを返すわ
         }
+        return false;
       }
 
       window.onload = initMap;
