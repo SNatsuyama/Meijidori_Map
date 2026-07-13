@@ -280,6 +280,24 @@
             meijiLayer.loadGeoJson(config.url);
           } else {
             mapDataLayer.loadGeoJson(config.url, null, function(features) {
+              
+              // ★ここが新しい自動計算の魔法よ！
+              // URLで指定されたエリアの「区の塗り分けデータ」を読み込んだら...
+              if (isAreaSelected && config.areaTag === isAreaSelected && config.categoryTag === "region") {
+                const bounds = new google.maps.LatLngBounds();
+                
+                // 図形のすべての頂点を調べて、枠（Bounds）を広げていくの！
+                features.forEach(feature => {
+                  feature.getGeometry().forEachLatLng(latLng => {
+                    bounds.extend(latLng);
+                  });
+                });
+                
+                // 計算した正確な枠に合わせてズーム！ 
+                // 余白(padding)が足りなければ 30 とか 50 に増やしなさいよ！
+                map.fitBounds(bounds, { top: 20, bottom: 20, left: 20, right: 20 });
+              }
+
               features.forEach(feature => {
                 const category = feature.getProperty("categoryTag") || config.categoryTag;
                 feature.setProperty("categoryTag", category);
@@ -454,35 +472,23 @@
         const urlParams = new URLSearchParams(window.location.search);
         const area = urlParams.get('area');
 
-        // areaパラメーターがあって、ちゃんと定義されている区だったら実行！
-        if (area && areaBounds[area]) {
-          // まずはエリアのチェックを全部外すの
+        // areaパラメーターがあったらチェックを切り替えるわ！
+        if (area) {
           const areaCheckboxes = [
             "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", 
             "tag-arakawa", "tag-taitou", "tag-sumida", "tag-koutou"
           ];
           areaCheckboxes.forEach(id => document.getElementById(id).checked = false);
 
-          // 指定された区だけチェックを入れるわよ！
           const targetId = "tag-" + area;
           if (document.getElementById(targetId)) {
             document.getElementById(targetId).checked = true;
           }
 
-          // フィルターを更新する！
           updateFilter();
-
-          // ここがポイント！Boundsを使って区全体を画面に収めるのよ！
-          const bounds = new google.maps.LatLngBounds(
-            areaBounds[area].sw,
-            areaBounds[area].ne
-          );
-          // 少し余白(padding)を持たせて表示するわ。スマホとかだとキツキツになっちゃうからね！
-          map.fitBounds(bounds, { top: 10, bottom: 10, left: 10, right: 10 });
-          
-          return true; // areaパラメーターが有効だったことを返すわ
+          return area; // どのエリアが指定されたか、名前を返すわよ！
         }
-        return false;
+        return null;
       }
 
       window.onload = initMap;
