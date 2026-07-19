@@ -208,13 +208,21 @@
         const hue = Math.abs(hash % 360);
         return `hsl(${hue}, 80%, 45%)`;
       }
-
+      
       function showInfo(name, desc) {
         let safeName = name.replace(/\\n|\n/g, '<br>');
         let contentHtml = `<strong style="display: block; line-height: 1.4;">${safeName}</strong>`;
         
         if (desc) {
           let safeDesc = desc.replace(/\\n|\n/g, '<br>');
+          
+          // ★ここがURLを自動でリンクに変える魔法よ！
+          const urlRegex = /(https?:\/\/[^\s<]+)/g;
+          safeDesc = safeDesc.replace(urlRegex, function(url) {
+            // 別のタブで開くように target="_blank" をつけておいたわ！
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: #0055FF; text-decoration: underline; word-break: break-all;">${url}</a>`;
+          });
+          
           contentHtml += `<p style="margin-top: 8px;">${safeDesc}</p>`;
         } else {
           contentHtml += `<p style="margin-top: 8px;">特に説明はないみたいね。</p>`;
