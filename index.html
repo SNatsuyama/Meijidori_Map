@@ -326,7 +326,13 @@
 
         meijiLayer.addListener('click', function(event) {
           const name = event.feature.getProperty("Name") || event.feature.getProperty("name") || "明治通り";
-          const desc = event.feature.getProperty("description");
+          let desc = event.feature.getProperty("description");
+          
+          // ★ここが追加部分よ！ オブジェクト形式なら value を取り出す！
+          if (desc && typeof desc === 'object' && desc.value) {
+            desc = desc.value;
+          }
+
           selectedFeatureName = name;
           updateAllStyles();
           showInfo(name, desc);
@@ -334,12 +340,17 @@
 
         mapDataLayer.addListener('click', function(event) {
           const name = event.feature.getProperty("Name") || event.feature.getProperty("name") || "名称未設定";
-          const desc = event.feature.getProperty("description");
+          let desc = event.feature.getProperty("description");
+          
+          // ★こっちも同じように追加するわ！
+          if (desc && typeof desc === 'object' && desc.value) {
+            desc = desc.value;
+          }
+
           selectedFeatureName = name;
           updateAllStyles();
           showInfo(name, desc);
         });
-
         const allFilters = [
           "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", "tag-arakawa", "tag-taitou", "tag-sumida", "tag-koutou",
           "tag-region", "tag-photo", "tag-intersection", "tag-crossing", "tag-restaurant", "tag-station"
