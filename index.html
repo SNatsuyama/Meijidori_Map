@@ -291,22 +291,6 @@
           } else {
             mapDataLayer.loadGeoJson(config.url, null, function(features) {
               
-              // ★ここが新しい自動計算の魔法よ！
-              // URLで指定されたエリアの「区の塗り分けデータ」を読み込んだら...
-              if (isAreaSelected && config.areaTag === isAreaSelected && config.categoryTag === "region") {
-                const bounds = new google.maps.LatLngBounds();
-                
-                // 図形のすべての頂点を調べて、枠（Bounds）を広げていくの！
-                features.forEach(feature => {
-                  feature.getGeometry().forEachLatLng(latLng => {
-                    bounds.extend(latLng);
-                  });
-                });
-                
-                // 計算した正確な枠に合わせてズーム！ 
-                // 余白(padding)が足りなければ 30 とか 50 に増やしなさいよ！
-                map.fitBounds(bounds, { top: 20, bottom: 20, left: 20, right: 20 });
-              }
 
               features.forEach(feature => {
                 const category = feature.getProperty("categoryTag") || config.categoryTag;
@@ -520,23 +504,58 @@
 
       function applyUrlParams() {
         const urlParams = new URLSearchParams(window.location.search);
-        const area = urlParams.get('area');
+        const areaParam = urlParams.get('area');
 
-        // areaパラメーターがあったらチェックを切り替えるわ！
-        if (area) {
+        if (areaParam) {
+          // 「shibuya,minato」みたいにカンマで区切られた文字を配列にするわ！
+          const selectedAreas = areaParam.split(',');
+
+          // 一旦すべての区のチェックを外すわよ
           const areaCheckboxes = [
             "tag-minato", "tag-shibuya", "tag-shinjuku", "tag-toshima", "tag-kita", 
             "tag-arakawa", "tag-taitou", "tag-sumida", "tag-koutou"
           ];
           areaCheckboxes.forEach(id => document.getElementById(id).checked = false);
 
-          const targetId = "tag-" + area;
-          if (document.getElementById(targetId)) {
-            document.getElementById(targetId).checked = true;
-          }
+          // URLで指定された区のチェックを入れる！
+          selectedAreas.forEach(area => {
+            const targetId = "tag-" + area.trim();
+            if (document.getElementById(targetId)) {
+              document.getElementById(targetId).checked = true;
+            }
+          });
 
           updateFilter();
-          return area; // どのエリアが指定されたか、名前を返すわよ！
+
+          // ★ここからが繁樹の言ってた「枠の合体」よ！
+          let minLat = 90, minLng = 180;  // 南西の最小値を探すための初期値
+          let maxLat = -90, maxLng = -180; // 北東の最大値を探すための初期値
+          let hasValidBounds = false;
+
+          selectedAreas.forEach(area => {
+            const key = area.trim();
+            if (areaBounds[key]) {
+              hasValidBounds = true;
+              const bounds = areaBounds[key];
+              // 最小の南(lat)と西(lng)を更新！
+              if (bounds.sw.lat < minLat) minLat = bounds.sw.lat;
+              if (bounds.sw.lng < minLng) minLng = bounds.sw.lng;
+              // 最大の北(lat)と東(lng)を更新！
+              if (bounds.ne.lat > maxLat) maxLat = bounds.ne.lat;
+              if (bounds.ne.lng > maxLng) maxLng = bounds.ne.lng;
+            }
+          });
+
+          // 合体させた大きな四角形にズームするわよ！
+          if (hasValidBounds) {
+            const combinedBounds = new google.maps.LatLngBounds(
+              new google.maps.LatLng(minLat, minLng), // 一番南西の点
+              new google.maps.LatLng(maxLat, maxLng)  // 一番北東の点
+            );
+            map.fitBounds(combinedBounds, { top: 20, bottom: 20, left: 20, right: 20 });
+          }
+
+          return selectedAreas; // 複数あるかもしれないから配列を返すわ！
         }
         return null;
       }
